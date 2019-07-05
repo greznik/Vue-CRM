@@ -32,8 +32,8 @@ export default new Router({
       component: () => import("./views/History.vue")
     },
     {
-      path: "/planing",
-      name: "planing",
+      path: "/planning",
+      name: "planning",
       meta: { layout: "main" },
       component: () => import("./views/Planning.vue")
     },
