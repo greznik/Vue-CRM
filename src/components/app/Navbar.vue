@@ -41,7 +41,6 @@
 
 
 <script>
-import { clearInterval } from 'timers';
 export default {
   data: () => ({
     date: new Date(),
@@ -49,22 +48,23 @@ export default {
     dropdown: null,
   }),
   methods: {
-    logout() {
+    async logout() {
+      await this.$store.dispatch('logout')
       this.$router.push('/login?message=logout')
     }
   },
   mounted() {
     this.interval = setInterval(() => {
       this.date = new Date()
-    }, 1000);
+    }, 1000)
     this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
-      constrainWidth: true
-    });
+      constrainWidth: false
+    })
   },
   beforeDestroy() {
     clearInterval(this.interval)
-    if (this.dropdown && this.destroy) {
-      this.dropdown.destroy();
+    if (this.dropdown && this.dropdown.destroy) {
+      this.dropdown.destroy()
     }
   }
 }
