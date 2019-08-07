@@ -89,20 +89,28 @@ export default {
     email: { email, required },
     password: { required, minLength: minLength(6) },
     name: { required },
-    false: { checked: v => v }
+    agree: { checked: v => v }
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
+      // Если форма в состоянии invalid то активируем валидацию
       if (this.$v.$invalid) {
         this.$v.$touch();
+        // Для прекращения действия функции
         return;
       }
+      // Собираем данные для передачи на сервер
       const formData = {
         email: this.email,
         password: this.password,
-        name: this.passwnameord
+        name: this.name
       };
-      this.$router.push("/");
+      // Для обработки ошибок
+      try {
+        await this.$store.dispatch("register", formData);
+
+        this.$router.push("/");
+      } catch (e) {}
     }
   }
 };

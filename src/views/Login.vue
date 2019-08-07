@@ -70,6 +70,7 @@ export default {
     password: { required, minLength: minLength(6) }
   },
   mounted() {
+    // Если есть ключ в объекте messages.js, то мы выводим строку, которая есть в этом объекте
     if (messages[this.$route.query.message]) {
       this.$message(messages[this.$route.query.message]);
     }
@@ -80,12 +81,14 @@ export default {
         this.$v.$touch();
         return;
       }
+      // Собираем данные для передачи на сервер
       const formData = {
         email: this.email,
         password: this.password
       };
 
       try {
+        // Передаем название action, который мы хотим задиспатчить и данные formData. Мы должны подождать пока он выполнится. И только в случае если данный экшн корректно отработает, то мы делаем редирект на главную
         await this.$store.dispatch("login", formData);
         this.$router.push("/");
       } catch (e) {}
