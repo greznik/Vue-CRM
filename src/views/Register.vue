@@ -60,7 +60,7 @@
     </div>
     <div class="card-action">
       <div>
-        <button class="btn waves-effect waves-light auth-submit" type="submit">
+        <button class="btn waves-effect waves-light auth-submit" type="submit" :disabled="disabled">
           Зарегистрироваться
           <i class="material-icons right">send</i>
         </button>
@@ -83,7 +83,8 @@ export default {
     email: "",
     password: "",
     name: "",
-    agree: false
+    agree: false,
+    disabled: false
   }),
   validations: {
     email: { email, required },
@@ -94,11 +95,13 @@ export default {
   methods: {
     async submitHandler() {
       // Если форма в состоянии invalid то активируем валидацию
+      
       if (this.$v.$invalid) {
         this.$v.$touch();
         // Для прекращения действия функции
         return;
       }
+      this.disabled = true;
       // Собираем данные для передачи на сервер
       const formData = {
         email: this.email,
@@ -108,7 +111,6 @@ export default {
       // Для обработки ошибок
       try {
         await this.$store.dispatch("register", formData);
-
         this.$router.push("/");
       } catch (e) {}
     }
