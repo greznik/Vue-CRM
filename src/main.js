@@ -5,8 +5,11 @@ import router from "./router";
 import store from "./store";
 // Фильтр даты и времени
 import dateFilter from "@/filters/date.filter";
+// Фильтр валют
+import currencyFilter from "@/filters/currency.filter";
 // Toast сообщение при выходе из системы
 import messagePlugin from "@/utils/message.plugin";
+import Loader from "@/components/app/Loader";
 import "./registerServiceWorker";
 import "materialize-css/dist/js/materialize.min";
 
@@ -19,6 +22,8 @@ Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.use(messagePlugin);
 Vue.filter("date", dateFilter);
+Vue.filter("currency", currencyFilter);
+Vue.component("Loader", Loader);
 
 // Инициализируем конфиг firebase не забываем установить его в npm i firebase
 firebase.initializeApp({

@@ -8,6 +8,7 @@ export default {
         // Передаем данные полученные из formData. Данные метод является асинхронным и он возвращает promise, поэтому применяем оператора await
         await firebase.auth().signInWithEmailAndPassword(email, password);
       } catch (e) {
+        // Вызываем обработчик в нужный момент получения ошибки
         commit("setError", e);
         // Чтобы не было редиректа при отсутствии логина в системе и мы продолжили эту ошибку
         throw e;
@@ -40,9 +41,11 @@ export default {
       return user ? user.uid : null;
     },
     // Отчищаем данные пользователя при логауте
-    async logout() {
+    async logout({commit}) {
       // Возвращает промис
       await firebase.auth().signOut();
+      // ClearInfo - mutation, поэтому вызываем его через commit
+      commit("clearInfo");
     }
   }
 };

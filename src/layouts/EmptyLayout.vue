@@ -15,7 +15,7 @@ export default {
     }
   },
   watch: {
-    // Следим за получением ошибки
+    // Следим за изменением error() fbError - firebase объект
     error(fbError) {
       this.$error(messages[fbError.code] || "Что-то пошло не так!");
     }

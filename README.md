@@ -1,4 +1,4 @@
-# vue-youtube
+# vue-crm
 
 ## Project setup
 ```
