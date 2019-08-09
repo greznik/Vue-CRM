@@ -56,6 +56,7 @@ export default {
     limit: { minValue: minValue(20) }
   },
   mounted() {
+    // Обновляем текст "Лимит" при загрузке страницы
     M.updateTextFields();
   },
   methods: {
@@ -65,14 +66,18 @@ export default {
         return;
       }
       try {
+        // Вызываем экшн и передаем следующие опции
         const category = await this.$store.dispatch("createCategory", {
           title: this.title,
           limit: this.limit
         });
+        // Сбрасываем state формы
         this.title = ''
         this.limit = 20
         this.$v.$reset()
+        // Выводим сообщение об успешном успехе
         this.$message('Вы создали категорию')
+        // Передаем данные с серва в род компонент
         this.$emit('created', category)
       } catch (e) {}
     }

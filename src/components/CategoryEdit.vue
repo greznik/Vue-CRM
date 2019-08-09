@@ -54,6 +54,7 @@
 import { required, minValue } from "vuelidate/lib/validators";
 
 export default {
+  // Принимаем массив из firebase и род компоненты
   props: {
     categories: {
       type: Array,
@@ -72,7 +73,7 @@ export default {
   },
   watch: {
     current(catId) {
-      // Находим ту категорию, которая соответствует выбранной модели в селекте
+      // Находим ту категорию, которая соответствует id выбранной модели в селекте
       const { title, limit } = this.categories.find(c => c.id === catId);
       this.title = title;
       this.limit = limit;
@@ -91,15 +92,16 @@ export default {
           title: this.title,
           limit: this.limit
         };
-        // Запрос на обновление  данных
+        // Запрос на обновление  данных, куда передаем объект выше
         await this.$store.dispatch("updateCategory", categoryData);
+        // Успешный успех
         this.$message("Категория успешно обновлена");
-        // Передаем данные для обновления элемента 
-        this.$emit('updated', categoryData)
+        // Передаем данные для обновления элемента
+        this.$emit("updated", categoryData);
       } catch (e) {}
     }
   },
-  // Получаем поля из массива, для отрисовки
+  // Получаем поля из массива, для отрисовки, чтобы не было значения null
   created() {
     const { id, title, limit } = this.categories[0];
     this.current = id;
@@ -107,11 +109,12 @@ export default {
     this.limit = limit;
   },
   mounted() {
+    // Оживляем select в materialize.css
     this.select = M.FormSelect.init(this.$refs.select);
     M.updateTextFields();
   },
   beforeDestroy() {
-    // Если существует селект и у него есть destroy, то вызываем  метод дестрой
+    // Если в селекте, что-то есть и у него есть метод destroy, то вызываем  этот метод
     if (this.select && this.select.destroy) {
       this.select.destroy();
     }

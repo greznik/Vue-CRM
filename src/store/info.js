@@ -15,6 +15,17 @@ export default {
     }
   },
   actions: {
+    async updateInfo({dispatch, commit, getters}, toUpdate) {
+      try {
+        const uid = await dispatch("getUid");
+        const updateData = {...getters.info, ...toUpdate}
+        await firebase.database().ref(`/users/${uid}/info`).update(updateData)
+        commit('setInfo', updateData)
+      } catch (e) {
+        commit('setError', e)
+        throw e
+      }
+    },
     // Обращаемся к базе данных и получаем ID пользователя
     async fetchInfo({ dispatch, commit }) {
       try {
@@ -27,7 +38,10 @@ export default {
           .once("value")).val();
           // Передаем Info, чтобы изменить state
         commit("setInfo", info);
-      } catch (e) {}
+      } catch (e) {
+        commit('setError', e)
+        throw e
+      }
     }
   },
   getters: {
