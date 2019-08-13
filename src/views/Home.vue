@@ -10,38 +10,44 @@
 
     <Loader v-if="loading" />
 
-    <div class="row" v-else>
-      <HomeBill :rates="currency.rates" />
-      <HomeCurrency :rates="currency.rates" :date="currency.date" />
+    <div v-else class="row">
+      
+      <HomeBill
+        :rates="currency.rates"
+      />
+
+      <HomeCurrency
+        :rates="currency.rates"
+        :date="currency.date"
+      />
+      
     </div>
   </div>
 </template>
 
 <script>
-import HomeBill from "@/components/HomeBill";
-import HomeCurrency from "@/components/HomeCurrency";
+import HomeBill from '@/components/HomeBill'
+import HomeCurrency from '@/components/HomeCurrency'
+
 export default {
-  name: "home",
+  name: 'home',
   data: () => ({
     loading: true,
-    // Здесь храним данные с сервера, о валютах
     currency: null
   }),
   async mounted() {
-    this.currency = await this.$store.dispatch("fetchCurrency");
-    console.log(this.currency);
-    this.loading = false;
+    this.currency = await this.$store.dispatch('fetchCurrency')
+    this.loading = false
   },
   methods: {
-   async refresh() {
-      this.loading = true;
-      this.currency = await this.$store.dispatch("fetchCurrency");
-      this.loading = false;
+    async refresh() {
+      this.loading = true
+      this.currency = await this.$store.dispatch('fetchCurrency')
+      this.loading = false
     }
   },
   components: {
-    HomeBill,
-    HomeCurrency
+    HomeBill, HomeCurrency
   }
-};
+}
 </script>

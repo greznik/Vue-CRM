@@ -8,30 +8,34 @@
       <form @submit.prevent="submitHandler">
         <div class="input-field">
           <input
-            id="name"
-            type="text"
-            v-model="title"
-            :class="{invalid: $v.title.$dirty && !$v.title.required}"
-          />
+              id="name"
+              type="text"
+              v-model="title"
+              :class="{invalid: $v.title.$dirty && !$v.title.required}"
+          >
           <label for="name">Название</label>
-          <span
-            class="helper-text invalid"
+          <span 
             v-if="$v.title.$dirty && !$v.title.required"
-          >Введите название категории</span>
+            class="helper-text invalid"
+          >
+            Введите название категории
+          </span>
         </div>
 
         <div class="input-field">
           <input
-            id="limit"
-            type="number"
-            v-model.number="limit"
-            :class="{invalid: $v.limit.$dirty && !$v.limit.minValue}"
-          />
+              id="limit"
+              type="number"
+              v-model.number="limit"
+              :class="{invalid: $v.limit.$dirty && !$v.limit.minValue}"
+          >
           <label for="limit">Лимит</label>
-          <span
-            class="helper-text invalid"
+          <span 
             v-if="$v.limit.$dirty && !$v.limit.minValue"
-          >Минимальная величина {{$v.limit.$params.minValue.min}}</span>
+            class="helper-text invalid"
+          >
+            Минимальная значение {{$v.limit.$params.minValue.min}}
+          </span>
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
@@ -44,43 +48,39 @@
 </template>
 
 <script>
-import { required, minValue } from "vuelidate/lib/validators";
+import {required, minValue} from 'vuelidate/lib/validators'
+
 export default {
-  
   data: () => ({
-    title: "",
-    limit: 20
+    title: '',
+    limit: 100
   }),
   validations: {
-    title: { required },
-    limit: { minValue: minValue(20) }
+    title: {required},
+    limit: {minValue: minValue(100)}
   },
   mounted() {
-    // Обновляем текст "Лимит" при загрузке страницы
-    M.updateTextFields();
+    M.updateTextFields()
   },
   methods: {
     async submitHandler() {
       if (this.$v.$invalid) {
-        this.$v.$touch();
-        return;
+        this.$v.$touch()
+        return
       }
+
       try {
-        // Вызываем экшн и передаем следующие опции
-        const category = await this.$store.dispatch("createCategory", {
+        const category = await this.$store.dispatch('createCategory', {
           title: this.title,
           limit: this.limit
-        });
-        // Сбрасываем state формы
+        })
         this.title = ''
-        this.limit = 20
+        this.limit = 100
         this.$v.$reset()
-        // Выводим сообщение об успешном успехе
-        this.$message('Вы создали категорию')
-        // Передаем данные с серва в род компонент
+        this.$message('Категория была создана')
         this.$emit('created', category)
       } catch (e) {}
     }
   }
-};
+}
 </script>

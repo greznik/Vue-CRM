@@ -41,28 +41,24 @@
 
 
 <script>
-import { setInterval, clearInterval } from 'timers';
 export default {
   data: () => ({
     date: new Date(),
     interval: null,
     dropdown: null,
   }),
+  methods: {
+    async logout() {
+      await this.$store.dispatch('logout')
+      this.$router.push('/login?message=logout')
+    }
+  },
   computed: {
     name() {
       return this.$store.getters.info.name
     }
   },
-  methods: {
-    // Добавляем Query параметр по кнопке входа
-    async logout() {
-      // Данныей экшн так же возвращает промис
-      await this.$store.dispatch('logout')
-      this.$router.push('/login?message=logout')
-    }
-  },
   mounted() {
-    // Обновляем дату и добавляем dropdown из MAterial.css
     this.interval = setInterval(() => {
       this.date = new Date()
     }, 1000)
@@ -71,7 +67,6 @@ export default {
     })
   },
   beforeDestroy() {
-    // Уничтожаем и оптимизируем код от счетчика даты и дропа вне лейаута
     clearInterval(this.interval)
     if (this.dropdown && this.dropdown.destroy) {
       this.dropdown.destroy()

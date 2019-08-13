@@ -4,44 +4,49 @@
       <span class="card-title">Домашняя бухгалтерия</span>
       <div class="input-field">
         <input
-          id="email"
-          type="text"
-          v-model.trim="email"
-          :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}"
-        />
+            id="email"
+            type="text"
+            v-model.trim="email"
+            :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}"
+        >
         <label for="email">Email</label>
-        <small
+        <small 
           class="helper-text invalid"
           v-if="$v.email.$dirty && !$v.email.required"
-        >Пустое поле недопустимо</small>
-        <small
+        >Поле Email не должно быть пустым</small>
+        <small 
           class="helper-text invalid"
           v-else-if="$v.email.$dirty && !$v.email.email"
-        >Email не корректный</small>
+        >Введите корретный Email</small>
       </div>
       <div class="input-field">
         <input
-          id="password"
-          type="password"
-          v-model.trim="password"
-          :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
-        />
-        <label for="password">Password</label>
-        <small
+            id="password"
+            type="password"
+            v-model.trim="password"
+            :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
+        >
+        <label for="password">Пароль</label>
+        <small 
           class="helper-text invalid"
-          for="password"
           v-if="$v.password.$dirty && !$v.password.required"
-        >Введите пароль</small>
-        <small
+        >
+          Введите пароль
+        </small>
+        <small 
           class="helper-text invalid"
-          for="password"
           v-else-if="$v.password.$dirty && !$v.password.minLength"
-        >Пароль должен содержать {{$v.password.$params.minLength.min}} символов</small>
+        >
+          Пароль должен быть {{$v.password.$params.minLength.min}} символов. Сейчас он {{password.length}}
+        </small>
       </div>
     </div>
     <div class="card-action">
       <div>
-        <button class="btn waves-effect waves-light auth-submit" type="submit">
+        <button
+            class="btn waves-effect waves-light auth-submit"
+            type="submit"
+        >
           Войти
           <i class="material-icons right">send</i>
         </button>
@@ -56,43 +61,40 @@
 </template>
 
 <script>
-import { email, required, minLength } from "vuelidate/lib/validators";
-import messages from "@/utils/messages";
+import {email, required, minLength} from 'vuelidate/lib/validators'
+import messages from '@/utils/messages'
 
 export default {
-  name: "login",
+  name: 'login',
   data: () => ({
-    email: "",
-    password: ""
+    email: '',
+    password: ''
   }),
   validations: {
-    email: { email, required },
-    password: { required, minLength: minLength(6) }
+    email: {email, required},
+    password: {required, minLength: minLength(6)}
   },
   mounted() {
-    // Если есть ключ в объекте messages.js, то мы выводим строку, которая есть в этом объекте
     if (messages[this.$route.query.message]) {
-      this.$message(messages[this.$route.query.message]);
+      this.$message(messages[this.$route.query.message])
     }
   },
   methods: {
     async submitHandler() {
       if (this.$v.$invalid) {
-        this.$v.$touch();
-        return;
+        this.$v.$touch()
+        return
       }
-      // Собираем данные для передачи на сервер
       const formData = {
         email: this.email,
         password: this.password
-      };
+      }
 
       try {
-        // Передаем название action, который мы хотим задиспатчить и данные formData. Мы должны подождать пока он выполнится. И только в случае если данный экшн корректно отработает, то мы делаем редирект на главную
-        await this.$store.dispatch("login", formData);
-        this.$router.push("/");
+        await this.$store.dispatch('login', formData)
+        this.$router.push('/')
       } catch (e) {}
     }
   }
-};
+}
 </script>

@@ -1,14 +1,12 @@
 <template>
   <div class="app-loader">
-    <div class="preloader-wrapper big active">
+    <div class="preloader-wrapper active">
       <div class="spinner-layer" :class="color">
         <div class="circle-clipper left">
           <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
+        </div><div class="gap-patch">
           <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
+        </div><div class="circle-clipper right">
           <div class="circle"></div>
         </div>
       </div>
@@ -20,13 +18,9 @@
 export default {
   computed: {
     color() {
-      const colors = [
-        "spinner-blue-only",
-        "spinner-red-only",
-        "spinner-green-only"
-      ];
+      const colors = ['spinner-red-only', 'spinner-blue-only', 'spinner-green-only']
       return colors[Math.floor(Math.random() * 3)]
     }
   }
-};
+}
 </script>
