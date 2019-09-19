@@ -9,6 +9,7 @@ import dateFilter from "@/filters/date.filter";
 import currencyFilter from "@/filters/currency.filter";
 // Toast сообщение при выходе из системы
 import messagePlugin from "@/utils/message.plugin";
+import tooltipDirective from "@/directives/tooltip.directive";
 import Loader from "@/components/app/Loader";
 import "./registerServiceWorker";
 import "materialize-css/dist/js/materialize.min";
@@ -24,6 +25,7 @@ Vue.use(messagePlugin);
 Vue.filter("date", dateFilter);
 Vue.filter("currency", currencyFilter);
 Vue.component("Loader", Loader);
+Vue.component("tooltip", tooltipDirective);
 
 // Инициализируем конфиг firebase не забываем установить его в npm i firebase
 firebase.initializeApp({
