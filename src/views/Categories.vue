@@ -8,7 +8,7 @@
       <div class="row" v-else>
         <CategoryCreate @created="addNewCategory" />
 
-        <CategoryEdit 
+        <CategoryEdit
           v-if="categories.length"
           :categories="categories"
           :key="categories.length + updateCount"
@@ -25,6 +25,11 @@ import CategoryCreate from '@/components/CategoryCreate'
 import CategoryEdit from '@/components/CategoryEdit'
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$title('Menu_Categories')
+    }
+  },
   name: 'categories',
   data: () => ({
     categories: [],
@@ -36,7 +41,8 @@ export default {
     this.loading = false
   },
   components: {
-    CategoryCreate, CategoryEdit
+    CategoryCreate,
+    CategoryEdit
   },
   methods: {
     addNewCategory(category) {

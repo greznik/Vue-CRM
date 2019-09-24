@@ -6,76 +6,59 @@
 
     <Loader v-if="loading" />
 
-    <p class="center" v-else-if="!categories.length">Категорий пока нет. <router-link to="/categories">Добавить новую категорию</router-link></p>
+    <p class="center" v-else-if="!categories.length">
+      Категорий пока нет.
+      <router-link to="/categories">Добавить новую категорию</router-link>
+    </p>
 
     <form class="form" v-else @submit.prevent="handleSubmit">
-      <div class="input-field" >
+      <div class="input-field">
         <select ref="select" v-model="category">
-          <option
-            v-for="c in categories"
-            :key="c.id"
-            :value="c.id"
-          >{{c.title}}</option>
+          <option v-for="c in categories" :key="c.id" :value="c.id">{{c.title}}</option>
         </select>
         <label>Выберите категорию</label>
       </div>
 
       <p>
         <label>
-          <input
-              class="with-gap"
-              name="type"
-              type="radio"
-              value="income"
-              v-model="type"
-          />
+          <input class="with-gap" name="type" type="radio" value="income" v-model="type" />
           <span>Доход</span>
         </label>
       </p>
 
       <p>
         <label>
-          <input
-              class="with-gap"
-              name="type"
-              type="radio"
-              value="outcome"
-              v-model="type"
-          />
+          <input class="with-gap" name="type" type="radio" value="outcome" v-model="type" />
           <span>Расход</span>
         </label>
       </p>
 
       <div class="input-field">
         <input
-            id="amount"
-            type="number"
-            v-model.number="amount"
-            :class="{invalid: $v.amount.$dirty && !$v.amount.minValue}"
-        >
+          id="amount"
+          type="number"
+          v-model.number="amount"
+          :class="{invalid: $v.amount.$dirty && !$v.amount.minValue}"
+        />
         <label for="amount">Сумма</label>
-        <span 
-            v-if="$v.amount.$dirty && !$v.amount.minValue"
-            class="helper-text invalid"
-          >
-            Минимальная значение {{$v.amount.$params.minValue.min}}
-          </span>
+        <span
+          v-if="$v.amount.$dirty && !$v.amount.minValue"
+          class="helper-text invalid"
+        >Минимальная значение {{$v.amount.$params.minValue.min}}</span>
       </div>
 
       <div class="input-field">
         <input
-            id="description"
-            type="text"
-            v-model="description"
-            :class="{invalid: $v.description.$dirty && !$v.description.required}"
-        >
+          id="description"
+          type="text"
+          v-model="description"
+          :class="{invalid: $v.description.$dirty && !$v.description.required}"
+        />
         <label for="description">Описание</label>
-        <span 
-            v-if="$v.description.$dirty && !$v.description.required"
-            class="helper-text invalid"
-          >
-            Введите описание 
-          </span>
+        <span
+          v-if="$v.description.$dirty && !$v.description.required"
+          class="helper-text invalid"
+        >Введите описание</span>
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
@@ -87,9 +70,14 @@
 </template>
 
 <script>
-import {required, minValue} from 'vuelidate/lib/validators'
-import {mapGetters} from 'vuex'
+import { required, minValue } from 'vuelidate/lib/validators'
+import { mapGetters } from 'vuex'
 export default {
+  metaInfo() {
+    return {
+      title: this.$title('Menu_NewRecord')
+    }
+  },
   name: 'record',
   data: () => ({
     loading: true,
@@ -101,8 +89,8 @@ export default {
     description: ''
   }),
   validations: {
-    amount: {minValue: minValue(1)},
-    description: {required}
+    amount: { minValue: minValue(1) },
+    description: { required }
   },
   async mounted() {
     this.categories = await this.$store.dispatch('fetchCategories')
@@ -143,18 +131,21 @@ export default {
             type: this.type,
             date: new Date().toJSON()
           })
-          const bill = this.type === 'income'
-            ? this.info.bill + this.amount
-            : this.info.bill - this.amount
+          const bill =
+            this.type === 'income'
+              ? this.info.bill + this.amount
+              : this.info.bill - this.amount
 
-          await this.$store.dispatch('updateInfo', {bill})
+          await this.$store.dispatch('updateInfo', { bill })
           this.$message('Запись успешно создана')
           this.$v.$reset()
           this.amount = 1
           this.description = ''
         } catch (e) {}
       } else {
-        this.$message(`Недостаточно средств на счете (${this.amount - this.info.bill})`)
+        this.$message(
+          `Недостаточно средств на счете (${this.amount - this.info.bill})`
+        )
       }
     }
   },

@@ -11,16 +11,9 @@
     <Loader v-if="loading" />
 
     <div v-else class="row">
-      
-      <HomeBill
-        :rates="currency.rates"
-      />
+      <HomeBill :rates="currency.rates" />
 
-      <HomeCurrency
-        :rates="currency.rates"
-        :date="currency.date"
-      />
-      
+      <HomeCurrency :rates="currency.rates" :date="currency.date" />
     </div>
   </div>
 </template>
@@ -30,6 +23,11 @@ import HomeBill from '@/components/HomeBill'
 import HomeCurrency from '@/components/HomeCurrency'
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$title('Menu_Bill')
+    }
+  },
   name: 'home',
   data: () => ({
     loading: true,
@@ -47,7 +45,8 @@ export default {
     }
   },
   components: {
-    HomeBill, HomeCurrency
+    HomeBill,
+    HomeCurrency
   }
 }
 </script>

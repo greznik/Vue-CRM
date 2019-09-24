@@ -8,7 +8,7 @@
       <canvas ref="canvas"></canvas>
     </div>
 
-    <Loader v-if="loading"/>
+    <Loader v-if="loading" />
 
     <p class="center" v-else-if="!records.length">
       Записей пока нет.
@@ -16,7 +16,7 @@
     </p>
 
     <section v-else>
-      <HistoryTable :records="items"/>
+      <HistoryTable :records="items" />
 
       <Paginate
         v-model="page"
@@ -37,6 +37,11 @@ import HistoryTable from '@/components/HistoryTable'
 import { Pie } from 'vue-chartjs'
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$title('Menu_History')
+    }
+  },
   name: 'history',
   extends: Pie,
   mixins: [paginationMixin],

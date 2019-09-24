@@ -11,7 +11,7 @@
           type="text"
           v-model="name"
           :class="{invalid: $v.name.$dirty && !$v.name.required}"
-        >
+        />
         <label for="description">{{'Name'|localize}}</label>
         <small
           class="helper-text invalid"
@@ -22,7 +22,7 @@
       <div class="switch">
         <label>
           English
-          <input type="checkbox" v-model="isRuLocale">
+          <input type="checkbox" v-model="isRuLocale" />
           <span class="lever"></span>
           Русский
         </label>
@@ -39,7 +39,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
+import localeFilter from '@/filters/localize.filter'
 export default {
+  metaInfo() {
+    return {
+      title: this.$title('ProfileTitle')
+    }
+  },
   data: () => ({
     name: '',
     isRuLocale: true
